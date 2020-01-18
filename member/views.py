@@ -3,6 +3,7 @@ from .models import (ServiceOffer, Member, Interest, Event, Company, Community,
 from .serializers import (ServiceOfferSerializer, MemberSerializer, InterestSerializer,
                           EventSerializer, CompanySerializer, CommunitySerializer,
                           SkillSerializer)
+
 from rest_framework.viewsets import ModelViewSet
 
 
@@ -27,7 +28,7 @@ class EventViewSet(ModelViewSet):
 
 
 class ServiceOfferViewSet(ModelViewSet):
-    queryset = ServiceOffer.objects.all()
+    queryset = ServiceOffer.objects.prefetch_related('skill').all()
     serializer_class = ServiceOfferSerializer
 
 
@@ -39,4 +40,4 @@ class InterestViewSet(ModelViewSet):
 class SkillViewSet(ModelViewSet):
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
-
+    search_fields = ['name']

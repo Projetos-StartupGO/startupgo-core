@@ -4,11 +4,21 @@ from .models import (Member, Community, Company, Event, Skill, Interest,
 from rest_framework import serializers
 
 
+class SkillSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Skill
+        fields = '__all__'
+
+
 class MemberSerializer(serializers.ModelSerializer):
+
+    skill = SkillSerializer()
 
     class Meta:
         model = Member
-        fields = '__all__'
+        exclude = ['password', 'is_superuser', 'is_staff', 'is_active', 'date_joined',
+                   'created', 'modified', 'groups', 'user_permissions', 'username']
 
 
 class CommunitySerializer(serializers.ModelSerializer):
@@ -29,13 +39,6 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = '__all__'
-
-
-class SkillSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Skill
         fields = '__all__'
 
 

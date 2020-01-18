@@ -20,7 +20,7 @@ class MemberManager(UserManager):
 
 
 class Skill(BaseModel):
-    name = models.SlugField()
+    name = models.CharField(unique=True, max_length=50)
 
     class Meta(BaseModel.Meta):
         verbose_name = _('Habilidade')
@@ -48,7 +48,7 @@ class Member(BaseModel, AbstractUser):
 
 
 class Community(BaseModel):
-    name = models.SlugField()
+    name = models.CharField(unique=True, max_length=50)
     description = models.CharField(max_length=255)
     owner = models.ForeignKey(Member, on_delete=models.PROTECT, related_name='community_owners')
     member = models.ManyToManyField(Member, related_name='community_members')
@@ -62,7 +62,7 @@ class Community(BaseModel):
 
 
 class Company(BaseModel):
-    name = models.SlugField()
+    name = models.CharField(unique=True, max_length=50)
     owner = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="company_owners")
     member = models.ManyToManyField(Member, related_name='company_members')
 
@@ -75,7 +75,8 @@ class Company(BaseModel):
 
 
 class Event(BaseModel):
-    name = models.SlugField()
+    name = models.CharField(max_length=50)
+    slug = models.SlugField()
     address = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     owner = models.ForeignKey(Member, on_delete=models.PROTECT, related_name='event_owners')
@@ -90,7 +91,7 @@ class Event(BaseModel):
 
 
 class Interest(BaseModel):
-    name = models.SlugField()
+    name = models.CharField(unique=True, max_length=50)
 
     class Meta(BaseModel.Meta):
         verbose_name = _('Interesse')
@@ -101,7 +102,7 @@ class Interest(BaseModel):
 
 
 class ServiceOffer(BaseModel):
-    name = models.SlugField()
+    name = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
     skill = models.ManyToManyField(Skill, related_name='service_offer_skills')
 
