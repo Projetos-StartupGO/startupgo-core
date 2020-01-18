@@ -127,7 +127,6 @@ REST_FRAMEWORK = {
         'authentication.authentication.JWTAuthentication'
     ],
     'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter'],
-    'PAGE_SIZE': 50
 }
 
 if DEBUG:
