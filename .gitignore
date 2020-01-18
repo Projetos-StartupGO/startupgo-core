@@ -221,3 +221,4 @@ venv.bak/
 pip-selfcheck.json
 
 # End of https://www.gitignore.io/api/django,pycharm,virtualenv
+*.sqlite3
