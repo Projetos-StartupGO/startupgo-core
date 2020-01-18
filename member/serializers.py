@@ -11,21 +11,22 @@ class SkillSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
-class MemberSerializer(serializers.ModelSerializer):
-
-    skill = SkillSerializer(many=True, required=True)
-
-    class Meta:
-        model = Member
-        fields = ['first_name', 'last_name', 'email', 'is_superuser', 'is_admin',
-                  'created', 'modified', 'skill']
-
-
 class CommunitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Community
         fields = '__all__'
+
+
+class MemberSerializer(serializers.ModelSerializer):
+
+    skill = SkillSerializer(many=True, required=True)
+    community = CommunitySerializer(many=True, required=True)
+
+    class Meta:
+        model = Member
+        fields = ['first_name', 'last_name', 'email', 'is_superuser', 'is_admin',
+                  'created', 'modified', 'skill', 'community']
 
 
 class CompanySerializer(serializers.ModelSerializer):

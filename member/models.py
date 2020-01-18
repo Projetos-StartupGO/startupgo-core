@@ -37,8 +37,10 @@ class Member(BaseModel):
     is_admin = models.BooleanField(_('admin status'), default=False)
     is_superuser = models.BooleanField(_('admin status'), default=False)
     is_active = models.BooleanField(_('active'), default=True)
-
-    skill = models.ManyToManyField(Skill, related_name='member_skills')
+    skill = models.ManyToManyField(Skill, related_name='member_skills', null=True, blank=True)
+    community = models.ManyToManyField('member.Community',
+                                       related_name='members_community', null=True, blank=True)
+    company = models.ManyToManyField('member.Company', related_name='members_company', null=True, blank=True)
 
     objects = MemberManager()
     original_manager = models.Manager()
@@ -58,7 +60,6 @@ class Community(BaseModel):
     name = models.CharField(unique=True, max_length=50)
     description = models.CharField(max_length=255)
     owner = models.ForeignKey(Member, on_delete=models.PROTECT, related_name='community_owners')
-    member = models.ManyToManyField(Member, related_name='community_members')
 
     class Meta(BaseModel.Meta):
         verbose_name = _('Comunidade')
@@ -71,7 +72,7 @@ class Community(BaseModel):
 class Company(BaseModel):
     name = models.CharField(unique=True, max_length=50)
     owner = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="company_owners")
-    member = models.ManyToManyField(Member, related_name='company_members')
+    member = models.ManyToManyField(Member, related_name='company_members', null=True, blank=True)
 
     class Meta(BaseModel.Meta):
         verbose_name = _('Empresa')
