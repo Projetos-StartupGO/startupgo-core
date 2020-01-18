@@ -8,17 +8,17 @@ class SkillSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Skill
-        fields = '__all__'
+        fields = ['id', 'name']
 
 
 class MemberSerializer(serializers.ModelSerializer):
 
-    skill = SkillSerializer()
+    skill = SkillSerializer(many=True, required=True)
 
     class Meta:
         model = Member
-        exclude = ['password', 'is_superuser', 'is_staff', 'is_active', 'date_joined',
-                   'created', 'modified', 'groups', 'user_permissions', 'username']
+        fields = ['first_name', 'last_name', 'email', 'is_superuser', 'is_admin',
+                  'created', 'modified', 'skill']
 
 
 class CommunitySerializer(serializers.ModelSerializer):

@@ -14,7 +14,7 @@ class BaseModel(models.Model):
         ordering = ['-created']
 
 
-class MemberManager(UserManager):
+class MemberManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_active=True)
 
@@ -30,11 +30,18 @@ class Skill(BaseModel):
         return self.name
 
 
-class Member(BaseModel, AbstractUser):
+class Member(BaseModel):
+    first_name = models.CharField(_('first name'), max_length=30, blank=True)
+    last_name = models.CharField(_('last name'), max_length=150, blank=True)
+    email = models.EmailField(_('email address'), blank=True)
+    is_admin = models.BooleanField(_('admin status'), default=False)
+    is_superuser = models.BooleanField(_('admin status'), default=False)
+    is_active = models.BooleanField(_('active'), default=True)
+
     skill = models.ManyToManyField(Skill, related_name='member_skills')
 
     objects = MemberManager()
-    original_manager = UserManager()
+    original_manager = models.Manager()
 
     def delete(self, using=None, keep_parents=False):
         raise Exception(_('Membros não podem ser apagados'))

@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from decouple import config, Csv
 
+from authentication.key import get_public_key
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -37,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken',
     'member',
 ]
 
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'authentication.middleware.MemberMiddleware'
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -104,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -117,21 +119,25 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'member.Member'
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication'
+        'authentication.authentication.JWTAuthentication'
     ],
-    'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter']
+    'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter'],
+    'PAGE_SIZE': 50
 }
 
 if DEBUG:
     REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'].append('rest_framework.authentication.SessionAuthentication')
+
+AUTHENTICATION_API_BASE_URI = config('AUTHENTICATION_API_BASE_URI')
+AUTHENTICATION_PUBLIC_KEY = os.environ.get(
+    'AUTHENTICATION_PUBLIC_KEY',
+    get_public_key(AUTHENTICATION_API_BASE_URI)
+)
 
 if config('LOGGING', default=False, cast=bool):
     LOGGING = {

@@ -5,7 +5,6 @@ from rest_framework import routers
 from .views import (CompanyViewSet, EventViewSet, CommunityViewSet, InterestViewSet,
                     MemberViewSet, SkillViewSet, ServiceOfferViewSet)
 
-from rest_framework.authtoken.views import obtain_auth_token
 
 router = routers.DefaultRouter()
 router.register('member', MemberViewSet)
@@ -20,5 +19,4 @@ urlpatterns = (
     # urls for Django Rest Framework API
     path('', include(router.urls)),
     path('auth/', include('rest_framework.urls')),
-    path('token/', obtain_auth_token)
 )
