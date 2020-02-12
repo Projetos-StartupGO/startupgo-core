@@ -1,4 +1,4 @@
-Django==2.2.9
+Django==2.2.10
 djangorestframework==3.11.0
 django-avatar==5.0.0
 python-decouple==3.3
