@@ -1,5 +1,5 @@
 Django==2.2.9
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 django-avatar==5.0.0
 python-decouple==3.3
 pyjwt[crypto]==1.7.1
